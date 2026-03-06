@@ -6,13 +6,11 @@ from scipy.optimize import least_squares
 from matplotlib.ticker import LogLocator, NullFormatter
 
 
-# ============================================================
 # 1) Experimental data (TIME IN HOURS)
-# ============================================================
+
 VARS_ORDER = ["x1", "x2", "x3", "x4", "x5"]
 PARAM_NAMES = ["k12", "k13", "k14", "k15", "k23", "k24", "k25", "k34", "k35", "k45"]
 
-# --- Ultrasound ---
 ultrasound = {
     "t": np.array([
         0, 0.0028, 0.0333, 0.0667, 0.1, 0.1333, 0.1667, 0.25, 0.3333, 0.4167,
@@ -36,7 +34,6 @@ ultrasound = {
                     0, 0, 0, 0, 0]),
 }
 
-# --- Ball mill ---
 ball_mill = {
     "t": np.array([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3.5, 4.5, 8.5]),
     "x5": np.array([10.11, 50.24, 62.58, 69.37, 72.98, 76.22, 80.94, 86.4, 90.24, 94.49, 97.79, 99.96]),
@@ -47,9 +44,8 @@ ball_mill = {
 }
 
 
-# ============================================================
 # 2) Kinetic model 
-# ============================================================
+
 def system(t, y, k):
     k12, k13, k14, k15, k23, k24, k25, k34, k35, k45 = k
     x1, x2, x3, x4, x5 = y
@@ -78,9 +74,8 @@ def simulate(t_eval, y0, k):
     return sol.y.T
 
 
-# ============================================================
 # 3) Parameter fitting
-# ============================================================
+
 def fit_model(name, data):
     t = np.asarray(data["t"], dtype=float)
     Yexp = np.vstack([np.asarray(data[v], dtype=float) for v in VARS_ORDER]).T
@@ -153,9 +148,8 @@ def fit_model(name, data):
     }
 
 
-# ============================================================
 # 4) Style and Figures
-# ============================================================
+
 def set_mpl_article_style():
     plt.rcParams.update({
         "font.family": "serif",
@@ -223,9 +217,8 @@ def _finalize_and_save(fname: str):
     plt.close()
 
 
-# ============================================================
 # 5) Plot functions
-# ============================================================
+
 def plot_article_x1_x5(res, fname):
     tmin = _log_safe_time(res["t_min"])
     Yexp = res["Yexp"]
@@ -351,9 +344,8 @@ def plot_article_comparison_x5(res_u, res_m, fname):
     plt.close(fig)
 
 
-# ============================================================
 # 6) Main
-# ============================================================
+
 def main():
     set_mpl_article_style()
 
@@ -377,4 +369,5 @@ def main():
 
 
 if __name__ == "__main__":
+
     main()
